@@ -362,6 +362,25 @@
             color: var(--success);
         }
 
+        .experience-item, .education-item {
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -382,6 +401,10 @@
             
             .template-selector {
                 grid-template-columns: 1fr 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
             }
         }
     </style>
@@ -446,52 +469,62 @@
                 </div>
 
                 <h2 class="section-title">Work Experience</h2>
-                <div class="form-group">
-                    <label for="jobTitle1">Job Title</label>
-                    <input type="text" id="jobTitle1" placeholder="Senior Developer">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="company1">Company</label>
-                        <input type="text" id="company1" placeholder="Tech Solutions Inc.">
+                <div id="experience-container">
+                    <div class="experience-item" id="experience-1">
+                        <button class="remove-btn" onclick="removeExperience(1)"><i class="fas fa-times"></i></button>
+                        <div class="form-group">
+                            <label for="jobTitle1">Job Title</label>
+                            <input type="text" id="jobTitle1" placeholder="Senior Developer">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="company1">Company</label>
+                                <input type="text" id="company1" placeholder="Tech Solutions Inc.">
+                            </div>
+                            <div class="form-group">
+                                <label for="location1">Location</label>
+                                <input type="text" id="location1" placeholder="New York, NY">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="startDate1">Start Date</label>
+                                <input type="text" id="startDate1" placeholder="Jan 2020">
+                            </div>
+                            <div class="form-group">
+                                <label for="endDate1">End Date</label>
+                                <input type="text" id="endDate1" placeholder="Present">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="jobDescription1">Job Description</label>
+                            <textarea id="jobDescription1" rows="3" placeholder="Describe your responsibilities and achievements..."></textarea>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="location1">Location</label>
-                        <input type="text" id="location1" placeholder="New York, NY">
-                    </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="startDate1">Start Date</label>
-                        <input type="text" id="startDate1" placeholder="Jan 2020">
-                    </div>
-                    <div class="form-group">
-                        <label for="endDate1">End Date</label>
-                        <input type="text" id="endDate1" placeholder="Present">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="jobDescription1">Job Description</label>
-                    <textarea id="jobDescription1" rows="3" placeholder="Describe your responsibilities and achievements..."></textarea>
-                </div>
-                <button class="add-btn"><i class="fas fa-plus"></i> Add Another Position</button>
+                <button class="add-btn" id="add-experience"><i class="fas fa-plus"></i> Add Another Position</button>
 
                 <h2 class="section-title">Education</h2>
-                <div class="form-group">
-                    <label for="degree">Degree</label>
-                    <input type="text" id="degree" placeholder="Bachelor of Science in Computer Science">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="school">School</label>
-                        <input type="text" id="school" placeholder="University of Technology">
+                <div id="education-container">
+                    <div class="education-item" id="education-1">
+                        <button class="remove-btn" onclick="removeEducation(1)"><i class="fas fa-times"></i></button>
+                        <div class="form-group">
+                            <label for="degree1">Degree</label>
+                            <input type="text" id="degree1" placeholder="Bachelor of Science in Computer Science">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="school1">School</label>
+                                <input type="text" id="school1" placeholder="University of Technology">
+                            </div>
+                            <div class="form-group">
+                                <label for="gradYear1">Graduation Year</label>
+                                <input type="text" id="gradYear1" placeholder="2018">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="gradYear">Graduation Year</label>
-                        <input type="text" id="gradYear" placeholder="2018">
-                    </div>
                 </div>
-                <button class="add-btn"><i class="fas fa-plus"></i> Add Another Education</button>
+                <button class="add-btn" id="add-education"><i class="fas fa-plus"></i> Add Another Education</button>
 
                 <h2 class="section-title">Skills</h2>
                 <div class="form-group">
@@ -501,15 +534,15 @@
 
                 <h2 class="section-title">Choose Template</h2>
                 <div class="template-selector">
-                    <div class="template-option active">
+                    <div class="template-option active" data-template="professional">
                         <div class="template-preview">Professional</div>
                         <div>Professional</div>
                     </div>
-                    <div class="template-option">
+                    <div class="template-option" data-template="modern">
                         <div class="template-preview">Modern</div>
                         <div>Modern</div>
                     </div>
-                    <div class="template-option">
+                    <div class="template-option" data-template="creative">
                         <div class="template-preview">Creative</div>
                         <div>Creative</div>
                     </div>
@@ -536,20 +569,24 @@
                     
                     <div class="resume-section">
                         <div class="resume-section-title">Work Experience</div>
-                        <div class="resume-item">
-                            <div class="resume-item-title" id="preview-job-title">Senior Developer</div>
-                            <div class="resume-item-subtitle" id="preview-company">Tech Solutions Inc. | <span id="preview-location">New York, NY</span></div>
-                            <div class="resume-item-date" id="preview-dates">Jan 2020 - Present</div>
-                            <p id="preview-job-description">Lead development of web applications using React and Node.js. Managed a team of 5 developers and improved application performance by 40%.</p>
+                        <div id="preview-experience">
+                            <div class="resume-item" id="preview-experience-1">
+                                <div class="resume-item-title" id="preview-job-title-1">Senior Developer</div>
+                                <div class="resume-item-subtitle" id="preview-company-1">Tech Solutions Inc. | <span id="preview-location-1">New York, NY</span></div>
+                                <div class="resume-item-date" id="preview-dates-1">Jan 2020 - Present</div>
+                                <p id="preview-job-description-1">Lead development of web applications using React and Node.js. Managed a team of 5 developers and improved application performance by 40%.</p>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="resume-section">
                         <div class="resume-section-title">Education</div>
-                        <div class="resume-item">
-                            <div class="resume-item-title" id="preview-degree">Bachelor of Science in Computer Science</div>
-                            <div class="resume-item-subtitle" id="preview-school">University of Technology</div>
-                            <div class="resume-item-date" id="preview-grad-year">Graduated: 2018</div>
+                        <div id="preview-education">
+                            <div class="resume-item" id="preview-education-1">
+                                <div class="resume-item-title" id="preview-degree-1">Bachelor of Science in Computer Science</div>
+                                <div class="resume-item-subtitle" id="preview-school-1">University of Technology</div>
+                                <div class="resume-item-date" id="preview-grad-year-1">Graduated: 2018</div>
+                            </div>
                         </div>
                     </div>
                     
@@ -588,6 +625,10 @@
     </footer>
 
     <script>
+        // Initialize counters for dynamic form elements
+        let experienceCounter = 1;
+        let educationCounter = 1;
+
         // Form input event listeners to update preview in real-time
         document.getElementById('fullName').addEventListener('input', function() {
             document.getElementById('preview-name').textContent = this.value || 'John Doe';
@@ -613,45 +654,186 @@
             document.getElementById('preview-summary').textContent = this.value || 'Experienced software engineer with 5+ years in full-stack development. Specialized in JavaScript frameworks and cloud technologies. Passionate about creating efficient and scalable solutions.';
         });
 
-        document.getElementById('jobTitle1').addEventListener('input', function() {
-            document.getElementById('preview-job-title').textContent = this.value || 'Senior Developer';
-        });
-
-        document.getElementById('company1').addEventListener('input', function() {
-            document.getElementById('preview-company').textContent = (this.value || 'Tech Solutions Inc.') + ' | ' + document.getElementById('location1').value;
-        });
-
-        document.getElementById('location1').addEventListener('input', function() {
-            document.getElementById('preview-company').textContent = document.getElementById('company1').value + ' | ' + (this.value || 'New York, NY');
-        });
-
-        document.getElementById('startDate1').addEventListener('input', function() {
-            document.getElementById('preview-dates').textContent = (this.value || 'Jan 2020') + ' - ' + document.getElementById('endDate1').value;
-        });
-
-        document.getElementById('endDate1').addEventListener('input', function() {
-            document.getElementById('preview-dates').textContent = document.getElementById('startDate1').value + ' - ' + (this.value || 'Present');
-        });
-
-        document.getElementById('jobDescription1').addEventListener('input', function() {
-            document.getElementById('preview-job-description').textContent = this.value || 'Lead development of web applications using React and Node.js. Managed a team of 5 developers and improved application performance by 40%.';
-        });
-
-        document.getElementById('degree').addEventListener('input', function() {
-            document.getElementById('preview-degree').textContent = this.value || 'Bachelor of Science in Computer Science';
-        });
-
-        document.getElementById('school').addEventListener('input', function() {
-            document.getElementById('preview-school').textContent = this.value || 'University of Technology';
-        });
-
-        document.getElementById('gradYear').addEventListener('input', function() {
-            document.getElementById('preview-grad-year').textContent = 'Graduated: ' + (this.value || '2018');
-        });
-
+        // Skills input
         document.getElementById('skills').addEventListener('input', function() {
             document.getElementById('preview-skills').textContent = this.value || 'JavaScript, React, Node.js, Python, SQL, AWS, Git, Agile Methodologies';
         });
+
+        // Add experience functionality
+        document.getElementById('add-experience').addEventListener('click', function() {
+            experienceCounter++;
+            const newExperience = document.createElement('div');
+            newExperience.className = 'experience-item';
+            newExperience.id = `experience-${experienceCounter}`;
+            newExperience.innerHTML = `
+                <button class="remove-btn" onclick="removeExperience(${experienceCounter})"><i class="fas fa-times"></i></button>
+                <div class="form-group">
+                    <label for="jobTitle${experienceCounter}">Job Title</label>
+                    <input type="text" id="jobTitle${experienceCounter}" placeholder="Senior Developer">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="company${experienceCounter}">Company</label>
+                        <input type="text" id="company${experienceCounter}" placeholder="Tech Solutions Inc.">
+                    </div>
+                    <div class="form-group">
+                        <label for="location${experienceCounter}">Location</label>
+                        <input type="text" id="location${experienceCounter}" placeholder="New York, NY">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startDate${experienceCounter}">Start Date</label>
+                        <input type="text" id="startDate${experienceCounter}" placeholder="Jan 2020">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate${experienceCounter}">End Date</label>
+                        <input type="text" id="endDate${experienceCounter}" placeholder="Present">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="jobDescription${experienceCounter}">Job Description</label>
+                    <textarea id="jobDescription${experienceCounter}" rows="3" placeholder="Describe your responsibilities and achievements..."></textarea>
+                </div>
+            `;
+            document.getElementById('experience-container').appendChild(newExperience);
+            
+            // Add event listeners for the new inputs
+            document.getElementById(`jobTitle${experienceCounter}`).addEventListener('input', updatePreviewExperience);
+            document.getElementById(`company${experienceCounter}`).addEventListener('input', updatePreviewExperience);
+            document.getElementById(`location${experienceCounter}`).addEventListener('input', updatePreviewExperience);
+            document.getElementById(`startDate${experienceCounter}`).addEventListener('input', updatePreviewExperience);
+            document.getElementById(`endDate${experienceCounter}`).addEventListener('input', updatePreviewExperience);
+            document.getElementById(`jobDescription${experienceCounter}`).addEventListener('input', updatePreviewExperience);
+            
+            // Add preview element
+            const previewExperience = document.createElement('div');
+            previewExperience.className = 'resume-item';
+            previewExperience.id = `preview-experience-${experienceCounter}`;
+            previewExperience.innerHTML = `
+                <div class="resume-item-title" id="preview-job-title-${experienceCounter}">Senior Developer</div>
+                <div class="resume-item-subtitle" id="preview-company-${experienceCounter}">Tech Solutions Inc. | <span id="preview-location-${experienceCounter}">New York, NY</span></div>
+                <div class="resume-item-date" id="preview-dates-${experienceCounter}">Jan 2020 - Present</div>
+                <p id="preview-job-description-${experienceCounter}">Lead development of web applications using React and Node.js. Managed a team of 5 developers and improved application performance by 40%.</p>
+            `;
+            document.getElementById('preview-experience').appendChild(previewExperience);
+        });
+
+        // Add education functionality
+        document.getElementById('add-education').addEventListener('click', function() {
+            educationCounter++;
+            const newEducation = document.createElement('div');
+            newEducation.className = 'education-item';
+            newEducation.id = `education-${educationCounter}`;
+            newEducation.innerHTML = `
+                <button class="remove-btn" onclick="removeEducation(${educationCounter})"><i class="fas fa-times"></i></button>
+                <div class="form-group">
+                    <label for="degree${educationCounter}">Degree</label>
+                    <input type="text" id="degree${educationCounter}" placeholder="Bachelor of Science in Computer Science">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="school${educationCounter}">School</label>
+                        <input type="text" id="school${educationCounter}" placeholder="University of Technology">
+                    </div>
+                    <div class="form-group">
+                        <label for="gradYear${educationCounter}">Graduation Year</label>
+                        <input type="text" id="gradYear${educationCounter}" placeholder="2018">
+                    </div>
+                </div>
+            `;
+            document.getElementById('education-container').appendChild(newEducation);
+            
+            // Add event listeners for the new inputs
+            document.getElementById(`degree${educationCounter}`).addEventListener('input', updatePreviewEducation);
+            document.getElementById(`school${educationCounter}`).addEventListener('input', updatePreviewEducation);
+            document.getElementById(`gradYear${educationCounter}`).addEventListener('input', updatePreviewEducation);
+            
+            // Add preview element
+            const previewEducation = document.createElement('div');
+            previewEducation.className = 'resume-item';
+            previewEducation.id = `preview-education-${educationCounter}`;
+            previewEducation.innerHTML = `
+                <div class="resume-item-title" id="preview-degree-${educationCounter}">Bachelor of Science in Computer Science</div>
+                <div class="resume-item-subtitle" id="preview-school-${educationCounter}">University of Technology</div>
+                <div class="resume-item-date" id="preview-grad-year-${educationCounter}">Graduated: 2018</div>
+            `;
+            document.getElementById('preview-education').appendChild(previewEducation);
+        });
+
+        // Remove experience function
+        function removeExperience(id) {
+            if (experienceCounter > 1) {
+                document.getElementById(`experience-${id}`).remove();
+                document.getElementById(`preview-experience-${id}`).remove();
+                experienceCounter--;
+            } else {
+                alert("You need to have at least one experience entry.");
+            }
+        }
+
+        // Remove education function
+        function removeEducation(id) {
+            if (educationCounter > 1) {
+                document.getElementById(`education-${id}`).remove();
+                document.getElementById(`preview-education-${id}`).remove();
+                educationCounter--;
+            } else {
+                alert("You need to have at least one education entry.");
+            }
+        }
+
+        // Update preview for experience
+        function updatePreviewExperience() {
+            for (let i = 1; i <= experienceCounter; i++) {
+                const jobTitle = document.getElementById(`jobTitle${i}`)?.value || 'Senior Developer';
+                const company = document.getElementById(`company${i}`)?.value || 'Tech Solutions Inc.';
+                const location = document.getElementById(`location${i}`)?.value || 'New York, NY';
+                const startDate = document.getElementById(`startDate${i}`)?.value || 'Jan 2020';
+                const endDate = document.getElementById(`endDate${i}`)?.value || 'Present';
+                const jobDescription = document.getElementById(`jobDescription${i}`)?.value || 'Lead development of web applications using React and Node.js. Managed a team of 5 developers and improved application performance by 40%.';
+                
+                const previewJobTitle = document.getElementById(`preview-job-title-${i}`);
+                const previewCompany = document.getElementById(`preview-company-${i}`);
+                const previewLocation = document.getElementById(`preview-location-${i}`);
+                const previewDates = document.getElementById(`preview-dates-${i}`);
+                const previewJobDescription = document.getElementById(`preview-job-description-${i}`);
+                
+                if (previewJobTitle) previewJobTitle.textContent = jobTitle;
+                if (previewCompany) previewCompany.innerHTML = `${company} | <span id="preview-location-${i}">${location}</span>`;
+                if (previewDates) previewDates.textContent = `${startDate} - ${endDate}`;
+                if (previewJobDescription) previewJobDescription.textContent = jobDescription;
+            }
+        }
+
+        // Update preview for education
+        function updatePreviewEducation() {
+            for (let i = 1; i <= educationCounter; i++) {
+                const degree = document.getElementById(`degree${i}`)?.value || 'Bachelor of Science in Computer Science';
+                const school = document.getElementById(`school${i}`)?.value || 'University of Technology';
+                const gradYear = document.getElementById(`gradYear${i}`)?.value || '2018';
+                
+                const previewDegree = document.getElementById(`preview-degree-${i}`);
+                const previewSchool = document.getElementById(`preview-school-${i}`);
+                const previewGradYear = document.getElementById(`preview-grad-year-${i}`);
+                
+                if (previewDegree) previewDegree.textContent = degree;
+                if (previewSchool) previewSchool.textContent = school;
+                if (previewGradYear) previewGradYear.textContent = `Graduated: ${gradYear}`;
+            }
+        }
+
+        // Initialize event listeners for the first experience and education items
+        document.getElementById('jobTitle1').addEventListener('input', updatePreviewExperience);
+        document.getElementById('company1').addEventListener('input', updatePreviewExperience);
+        document.getElementById('location1').addEventListener('input', updatePreviewExperience);
+        document.getElementById('startDate1').addEventListener('input', updatePreviewExperience);
+        document.getElementById('endDate1').addEventListener('input', updatePreviewExperience);
+        document.getElementById('jobDescription1').addEventListener('input', updatePreviewExperience);
+
+        document.getElementById('degree1').addEventListener('input', updatePreviewEducation);
+        document.getElementById('school1').addEventListener('input', updatePreviewEducation);
+        document.getElementById('gradYear1').addEventListener('input', updatePreviewEducation);
 
         // Template selection
         const templateOptions = document.querySelectorAll('.template-option');
@@ -660,23 +842,45 @@
                 templateOptions.forEach(opt => opt.classList.remove('active'));
                 this.classList.add('active');
                 
-                // In a real application, this would change the resume template
-                alert('Template changed to: ' + this.querySelector('div:last-child').textContent);
+                // Change template style (simplified for this example)
+                const template = this.getAttribute('data-template');
+                const preview = document.getElementById('resume-preview');
+                
+                // Reset all template styles
+                preview.classList.remove('template-professional', 'template-modern', 'template-creative');
+                
+                // Apply selected template
+                preview.classList.add(`template-${template}`);
+                
+                // Show template change message
+                alert(`Template changed to: ${this.querySelector('div:last-child').textContent}`);
             });
         });
 
-        // Download PDF functionality
+        // Download PDF functionality - FIXED
         document.getElementById('download-pdf').addEventListener('click', function() {
             const element = document.getElementById('resume-preview');
+            
+            // Create a clone to avoid affecting the displayed resume
+            const clone = element.cloneNode(true);
+            
+            // Remove action buttons from the clone
+            const actionButtons = clone.querySelector('.action-buttons');
+            if (actionButtons) {
+                actionButtons.remove();
+            }
+            
+            // Set options for PDF generation
             const opt = {
                 margin: 10,
                 filename: 'resume.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
+                html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             
-            html2pdf().set(opt).from(element).save();
+            // Generate and download PDF
+            html2pdf().set(opt).from(clone).save();
         });
 
         // Save Resume functionality
@@ -687,9 +891,19 @@
         // Reset form functionality
         document.getElementById('reset-form').addEventListener('click', function() {
             if(confirm('Are you sure you want to reset the form? All data will be lost.')) {
+                // Reset all form inputs
                 document.querySelectorAll('input, textarea').forEach(element => {
                     element.value = '';
                 });
+                
+                // Reset counters and remove additional experience/education items
+                while (experienceCounter > 1) {
+                    removeExperience(experienceCounter);
+                }
+                
+                while (educationCounter > 1) {
+                    removeEducation(educationCounter);
+                }
                 
                 // Reset preview to default values
                 document.getElementById('preview-name').textContent = 'John Doe';
@@ -698,14 +912,11 @@
                 document.getElementById('preview-phone').textContent = '(123) 456-7890';
                 document.getElementById('preview-address').textContent = 'New York, NY';
                 document.getElementById('preview-summary').textContent = 'Experienced software engineer with 5+ years in full-stack development. Specialized in JavaScript frameworks and cloud technologies. Passionate about creating efficient and scalable solutions.';
-                document.getElementById('preview-job-title').textContent = 'Senior Developer';
-                document.getElementById('preview-company').textContent = 'Tech Solutions Inc. | New York, NY';
-                document.getElementById('preview-dates').textContent = 'Jan 2020 - Present';
-                document.getElementById('preview-job-description').textContent = 'Lead development of web applications using React and Node.js. Managed a team of 5 developers and improved application performance by 40%.';
-                document.getElementById('preview-degree').textContent = 'Bachelor of Science in Computer Science';
-                document.getElementById('preview-school').textContent = 'University of Technology';
-                document.getElementById('preview-grad-year').textContent = 'Graduated: 2018';
                 document.getElementById('preview-skills').textContent = 'JavaScript, React, Node.js, Python, SQL, AWS, Git, Agile Methodologies';
+                
+                // Reset first experience and education previews
+                updatePreviewExperience();
+                updatePreviewEducation();
             }
         });
     </script>
